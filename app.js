@@ -19,6 +19,10 @@ const handleCategory = async () => {
 
 }
 
+const handlerShort = () => {
+    // data.short((a,b) => parseInt(b.others.views)-parent(a.other.views))
+    console.log('hello short')
+}
 
 const loadCategoryData = async (categoryId) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/videos/category/${categoryId}`);
@@ -26,24 +30,41 @@ const loadCategoryData = async (categoryId) => {
 
     const cardContainer = document.getElementById('card-container');
     cardContainer.innerText = "";
-        // console.log(data.data.length)
+    // console.log(data.data.length)
 
-        if(data.data.length === 0 ){
+    if (data.data.length === 0) {
         const noMassage = document.getElementById('no-data');
-        noMassage.classList.remove('hidden')            
-        }
-        else{
-            data.data.forEach((data) => {
-                const div = document.createElement('div');
-                div.innerHTML = `
+        noMassage.classList.remove('hidden')
+    }
+    else {
+        data.data.forEach((data) => {          
+                           
+            const convertTime = (time) => {
+                var time = parseInt(time);
+                var hrs = Math.floor(time / 3600);
+                var mins = Math.floor((time % 3600) / 60);
+            
+                return (` <div>
+                <p class="bg-black text-white rounded-lg">
+                ${`${hrs}hrs ${mins}min ago`}</p>
+                </div>`);
+            }    
+            const div = document.createElement('div');
+            div.innerHTML = `
              <div class="card bg-base-100 shadow-xl mb-6">
-                            <figure><img class="lg:h-52 md:h-52 h-full" src="${data.thumbnail}" alt="Shoes" /></figure>
+                            <figure><img class="lg:h-52 md:h-52 h-full relative" src="${data.thumbnail}" alt="Shoes" /></figure>
+                            <div class="absolute rounded-xl left-[150px] bottom-32 w-32 text-center bg-black text-white">
+                                <p id="posted-date" class="text-center">
+                                ${(data?.others?.posted_date) ? convertTime (data?.others?.posted_date) : ''}</p>                  
+                                
+                            </div>
                             <div class="card-body p-0">                      
                               <div class="card-actions justify-between mt-2">
                                 <div>                           
                                     <div class="flex mt-2 gap-4 align-middle">
                                         <div class="rounded-full">
-                                            <img src="${data.authors[0].profile_picture}" alt="" class="rounded-full lg:w-12 md:w-10 w-10 h-10 lg:h-12 ml-2">
+                                            <img src="${data.authors[0].profile_picture}" alt="" 
+                                            class="rounded-full lg:w-12 md:w-10 w-10 h-10 lg:h-12 ml-2">
                                         </div> 
                                         <div class=" pt-2 pb-4">
                                             <h4 class="font-bold text-lg">${data.title}</h4>  
@@ -67,17 +88,24 @@ const loadCategoryData = async (categoryId) => {
                         </div>
         
             `;
-                cardContainer.appendChild(div)
-            })
-        
+            cardContainer.appendChild(div)
+        })
 
-        }
+        const noMassage = document.getElementById('no-data');
+        noMassage.classList.add('hidden')
 
-   
+
+    }
+
+
     // console.log(data.data)
 }
 
+// const handlerShort = () => {
+//     data.short((a,b) => parseInt(b.others.views)-parent(a.other.views))
+//     console.log('hello short')
+// }
 
 
 handleCategory()
-// loadCategoryData("1000")
+loadCategoryData("1000")
