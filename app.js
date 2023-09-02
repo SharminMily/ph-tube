@@ -16,7 +16,6 @@ const handleCategory = async () => {
             `;
         categoryContainer.appendChild(div)
     });
-
 }
 
 const handlerShort = () => {
@@ -94,18 +93,16 @@ const loadCategoryData = async (categoryId) => {
         const noMassage = document.getElementById('no-data');
         noMassage.classList.add('hidden')
 
-
-    }
-
-
-    // console.log(data.data)
+        document.getElementById('handleSortButton').addEventListener("click", function(){
+           
+            let viewsArray = data.data.map(item => parseFloat(item.others.views.replace('K', '')));
+            let sort = viewsArray.sort((a, b) => b - a);        
+            console.log(sort);             
+        })
+    }   
 }
-
-// const handlerShort = () => {
-//     data.short((a,b) => parseInt(b.others.views)-parent(a.other.views))
-//     console.log('hello short')
-// }
 
 
 handleCategory()
 loadCategoryData("1000")
+
